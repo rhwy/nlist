@@ -6,7 +6,6 @@ using NFluent;
 
 namespace NList.Core.Tests
 {
-
 	[TestFixture]
 	public class ForElementsTests
 	{
@@ -26,5 +25,4 @@ namespace NList.Core.Tests
 			Check.That (wrapped.Source).IsEqualTo (SampleData.Source);
 		}
 	}
-
 }

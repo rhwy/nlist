@@ -12,14 +12,13 @@ namespace NList.Core.Tests
 		[Test ()]
 		public void TestCase ()
 		{
-//
-//			ForElements.In (SampleData.Source)
-//				.NotIn (SampleData.Modified)
+
+			ForElements.In (SampleData.Source)
+				.NotIn (SampleData.Modified);
 //				.WithKey (x => x.Id)
 //				.Do ((item) => {
 //				Check.That (SampleData.Modified).Not.Contains (item);
-//			});
-
+//			});;
 
 		}
 	}
