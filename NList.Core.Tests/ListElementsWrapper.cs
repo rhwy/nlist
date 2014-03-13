@@ -4,6 +4,35 @@ using System.Collections.Generic;
 
 namespace NList.Core.Tests
 {
+	public class OnlyInJoinedListElementScalar<T> : OnlyInJoinedListElement<T,object>
+	{
+		public OnlyInJoinedListElementScalar (IEnumerable<T> source, IEnumerable<T> other)
+			: base (source, other, x => x)
+		{
+
+		}
+	}
+
+	public class OnlyInJoinedListElement<T,TKey> : JoinedListElement<T>
+	{
+		public Func<T,TKey> JoinKey { get; protected set; }
+
+		public OnlyInJoinedListElement (IEnumerable<T> source, IEnumerable<T> other, Func<T,TKey> joinKey)
+			: base (source, other)
+		{
+			JoinKey = joinKey;
+		}
+
+		protected override IEnumerable<T> definedEnumerableList ()
+		{
+			return EnumerableExtentions.Except (
+				Other,
+				Source,
+				JoinKey
+			);
+		}
+	}
+
 	public class NotInJoinedListElementScalar<T> : NotInJoinedListElement<T,object>
 	{
 		public NotInJoinedListElementScalar (IEnumerable<T> source, IEnumerable<T> other)
@@ -64,6 +93,18 @@ namespace NList.Core.Tests
 		{
 			Other = other;
 			return new NotInJoinedListElement<T,Tkey> (Source, Other, key);
+		}
+
+		public JoinedListElement<T> OnlyIn (List<T> other)
+		{
+			Other = other;
+			return new OnlyInJoinedListElementScalar<T> (Source, Other);
+		}
+
+		public JoinedListElement<T> OnlyIn<Tkey> (List<T> other, Func<T,Tkey> key)
+		{
+			Other = other;
+			return new OnlyInJoinedListElement<T,Tkey> (Source, Other, key);
 		}
 
 		protected virtual IEnumerable<T> definedEnumerableList ()
