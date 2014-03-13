@@ -20,11 +20,11 @@
 //	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //	SOFTWARE.
 // ==============================================================================
-using System;
-using System.Collections.Generic;
-
 namespace NList.Core
 {
+	using System;
+	using System.Collections.Generic;
+
 	public class AlsoInJoinedListElementScalar<T> : AlsoInJoinedListElement<T,object>
 	{
 		public AlsoInJoinedListElementScalar (IEnumerable<T> source, IEnumerable<T> other)

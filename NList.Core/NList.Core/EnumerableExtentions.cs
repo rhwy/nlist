@@ -20,12 +20,12 @@
 //	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //	SOFTWARE.
 // ==============================================================================
-using System;
-using System.Linq;
-using System.Collections.Generic;
-
 namespace NList.Core
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+
 	public static class EnumerableExtentions
 	{
 		public static IEnumerable<T> Except<T, U, TKey> (

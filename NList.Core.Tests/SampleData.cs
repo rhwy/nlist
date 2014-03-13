@@ -20,14 +20,14 @@
 //	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //	SOFTWARE.
 // ==============================================================================
-using NUnit.Framework;
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using NFluent;
-
 namespace NList.Core.Tests
 {
+	using NUnit.Framework;
+	using System;
+	using System.Linq;
+	using System.Collections.Generic;
+	using NFluent;
+
 	public static class SampleData
 	{
 		public static List<User> Source = new List<User> {
