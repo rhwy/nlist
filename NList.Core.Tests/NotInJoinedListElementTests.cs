@@ -29,53 +29,45 @@ namespace NList.Core.Tests
 	using NUnit.Framework;
 
 	[TestFixture]
-	public class EnumerableExtensionsTests
+	public class NotInJoinedListElementTests
 	{
 		[Test]
-		public void it_can_filter_lists_with_same_types ()
+		public void when_call_NotIn_it_stores_other_list_in_other ()
 		{
-			var left = SampleData.Source;
-			var right = SampleData.Modified;
+			var wrapped = new ListElementsWrapper<User> (SampleData.Source);
+			wrapped.NotIn (SampleData.Modified);
 
-			var elementsFromLeftNotInRight = 
-				EnumerableExtentions.Except (
-					left,
-					right,
-					x => x.Id
-				);
-
-			Check.That (elementsFromLeftNotInRight.Properties ("Id")).ContainsExactly (2);
+			Check.That (wrapped.Other).IsEqualTo (SampleData.Modified);
 		}
 
 		[Test]
-		public void it_can_filter_lists_with_different_types ()
+		public void when_call_NotIn_then_return_type_is_a_joinedList_of_notin_type ()
 		{
-			var left = SampleData.Source;
-			var right = SampleData.Modified.Select (x => x.Id);
+			var wrapped = new ListElementsWrapper<User> (SampleData.Source);
+			var joinList = wrapped.NotIn (SampleData.Modified);
 
-			var elementsFromLeftNotInRight = 
-				EnumerableExtentions.Except (
-					left,
-					right,
-					x => x.Id,
-					x => x
-				);
-
-			Check.That (elementsFromLeftNotInRight.Properties ("Id")).ContainsExactly (2);
+			Check.That (joinList).InheritsFrom<IEnumerable<User>> ();
+			Check.That (joinList).InheritsFrom<JoinedListElement<User>> ();
+			Check.That (joinList).InheritsFrom<NotInJoinedListElement<User,object>> ();
 		}
 
 		[Test]
-		public void it_can_get_elements_of_same_type_in_both_lists ()
+		public void when_enumerate_notinjoinlist_it_should_be_filtered ()
 		{
-			var left = new[]{ 1, 2, 3 };
-			var right = new[]{ 2, 3, 4 };
+			var wrapped = new ListElementsWrapper<int> (new []{ 1, 2, 3 });
+			var joinList = wrapped.NotIn (new List<int>{ 1, 3 });
 
-			var elementsInBothLists = 
-				EnumerableExtentions.Same (
-					left,
-					right);
+			Check.That (joinList).ContainsExactly (2);
+		}
 
-			Check.That (elementsInBothLists).ContainsExactly (2, 3);
+		[Test]
+		public void when_call_notin_with_second_parameter_it_is_the_filter_key ()
+		{
+			var sut = ForElements
+				.In (SampleData.Source)
+				.NotIn (SampleData.Modified, x => x.Id);
+
+			Check.That (sut.Properties ("Id")).ContainsExactly (2);
 		}
 	}
 }

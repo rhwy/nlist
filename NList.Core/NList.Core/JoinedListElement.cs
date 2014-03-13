@@ -20,62 +20,18 @@
 //	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //	SOFTWARE.
 // ==============================================================================
-namespace NList.Core.Tests
+namespace NList.Core
 {
 	using System;
 	using System.Collections.Generic;
-	using System.Linq;
-	using NFluent;
-	using NUnit.Framework;
 
-	[TestFixture]
-	public class EnumerableExtensionsTests
+	public class JoinedListElement<T> : ListElementsWrapper<T>
 	{
-		[Test]
-		public void it_can_filter_lists_with_same_types ()
+		public JoinedListElement (IEnumerable<T> source, IEnumerable<T> other)
+			: base (source)
 		{
-			var left = SampleData.Source;
-			var right = SampleData.Modified;
-
-			var elementsFromLeftNotInRight = 
-				EnumerableExtentions.Except (
-					left,
-					right,
-					x => x.Id
-				);
-
-			Check.That (elementsFromLeftNotInRight.Properties ("Id")).ContainsExactly (2);
-		}
-
-		[Test]
-		public void it_can_filter_lists_with_different_types ()
-		{
-			var left = SampleData.Source;
-			var right = SampleData.Modified.Select (x => x.Id);
-
-			var elementsFromLeftNotInRight = 
-				EnumerableExtentions.Except (
-					left,
-					right,
-					x => x.Id,
-					x => x
-				);
-
-			Check.That (elementsFromLeftNotInRight.Properties ("Id")).ContainsExactly (2);
-		}
-
-		[Test]
-		public void it_can_get_elements_of_same_type_in_both_lists ()
-		{
-			var left = new[]{ 1, 2, 3 };
-			var right = new[]{ 2, 3, 4 };
-
-			var elementsInBothLists = 
-				EnumerableExtentions.Same (
-					left,
-					right);
-
-			Check.That (elementsInBothLists).ContainsExactly (2, 3);
+			Source = source;
+			Other = other;
 		}
 	}
 }
