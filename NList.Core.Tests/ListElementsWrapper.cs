@@ -4,12 +4,32 @@ using System.Collections.Generic;
 
 namespace NList.Core.Tests
 {
-	public class NotInJoinedListElement<T> : JoinedListElement<T>
+	public class NotInJoinedListElementScalar<T> : NotInJoinedListElement<T,object>
 	{
-		public NotInJoinedListElement (IEnumerable<T> source, IEnumerable<T> other)
+		public NotInJoinedListElementScalar (IEnumerable<T> source, IEnumerable<T> other)
+			: base (source, other, x => x)
+		{
+
+		}
+	}
+
+	public class NotInJoinedListElement<T,TKey> : JoinedListElement<T>
+	{
+		public Func<T,TKey> JoinKey { get; protected set; }
+
+		public NotInJoinedListElement (IEnumerable<T> source, IEnumerable<T> other, Func<T,TKey> joinKey)
 			: base (source, other)
 		{
-			
+			JoinKey = joinKey;
+		}
+
+		protected override IEnumerable<T> definedEnumerableList ()
+		{
+			return EnumerableExtentions.Except (
+				Source,
+				Other,
+				JoinKey
+			);
 		}
 	}
 
@@ -37,14 +57,25 @@ namespace NList.Core.Tests
 		public JoinedListElement<T> NotIn (List<T> other)
 		{
 			Other = other;
-			return new NotInJoinedListElement<T> (Source, Other);
+			return new NotInJoinedListElementScalar<T> (Source, Other);
+		}
+
+		public JoinedListElement<T> NotIn<Tkey> (List<T> other, Func<T,Tkey> key)
+		{
+			Other = other;
+			return new NotInJoinedListElement<T,Tkey> (Source, Other, key);
+		}
+
+		protected virtual IEnumerable<T> definedEnumerableList ()
+		{
+			return Source;
 		}
 
 		#region IEnumerable implementation
 
 		public IEnumerator<T> GetEnumerator ()
 		{
-			return Source.GetEnumerator ();
+			return definedEnumerableList ().GetEnumerator ();
 		}
 
 		#endregion

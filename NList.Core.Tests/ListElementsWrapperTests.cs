@@ -42,7 +42,26 @@ namespace NList.Core.Tests
 
 			Check.That (joinList).InheritsFrom<IEnumerable<User>> ();
 			Check.That (joinList).InheritsFrom<JoinedListElement<User>> ();
-			Check.That (joinList).InheritsFrom<NotInJoinedListElement<User>> ();
+			Check.That (joinList).InheritsFrom<NotInJoinedListElement<User,object>> ();
+		}
+
+		[Test]
+		public void when_enumerate_notinjoinlist_it_should_be_filtered ()
+		{
+			var wrapped = new ListElementsWrapper<int> (new []{ 1, 2, 3 });
+			var joinList = wrapped.NotIn (new List<int>{ 1, 3 });
+
+			Check.That (joinList).ContainsExactly (2);
+		}
+
+		[Test]
+		public void when_call_notin_with_second_parameter_it_is_the_filter_key ()
+		{
+			var sut = ForElements
+				.In (SampleData.Source)
+				.NotIn (SampleData.Modified, x => x.Id);
+
+			Check.That (sut.Properties ("Id")).ContainsExactly (2);
 		}
 	}
 }

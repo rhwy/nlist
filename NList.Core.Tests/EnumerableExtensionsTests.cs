@@ -6,10 +6,25 @@ using NFluent;
 
 namespace NList.Core.Tests
 {
-
 	[TestFixture]
 	public class EnumerableExtensionsTests
 	{
+		[Test]
+		public void it_can_filter_lists_with_same_types ()
+		{
+			var left = SampleData.Source;
+			var right = SampleData.Modified;
+
+			var elementsFromLeftNotInRight = 
+				EnumerableExtentions.Except (
+					left,
+					right,
+					x => x.Id
+				);
+
+			Check.That (elementsFromLeftNotInRight.Properties ("Id")).ContainsExactly (2);
+		}
+
 		[Test]
 		public void it_can_filter_lists_with_different_types ()
 		{
@@ -27,5 +42,4 @@ namespace NList.Core.Tests
 			Check.That (elementsFromLeftNotInRight.Properties ("Id")).ContainsExactly (2);
 		}
 	}
-
 }
