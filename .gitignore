@@ -149,3 +149,8 @@ $RECYCLE.BIN/
 
 # Mac crap
 .DS_Store
+
+# ==============
+# Xamarin
+# =============
+*.userprefs
