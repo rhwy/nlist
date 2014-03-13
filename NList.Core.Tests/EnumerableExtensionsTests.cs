@@ -41,5 +41,19 @@ namespace NList.Core.Tests
 
 			Check.That (elementsFromLeftNotInRight.Properties ("Id")).ContainsExactly (2);
 		}
+
+		[Test]
+		public void it_can_get_elements_of_same_type_in_both_lists ()
+		{
+			var left = new[]{ 1, 2, 3 };
+			var right = new[]{ 2, 3, 4 };
+
+			var elementsInBothLists = 
+				EnumerableExtentions.Same (
+					left,
+					right);
+
+			Check.That (elementsInBothLists).ContainsExactly (2, 3);
+		}
 	}
 }
