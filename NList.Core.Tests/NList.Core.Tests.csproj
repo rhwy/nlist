@@ -40,7 +40,6 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Test.cs" />
     <Compile Include="User.cs" />
     <Compile Include="EnumerableExtentions.cs" />
     <Compile Include="SampleData.cs" />
@@ -49,6 +48,11 @@
     <Compile Include="ForElementsTests.cs" />
     <Compile Include="ListElementsWrapper.cs" />
     <Compile Include="ForElements.cs" />
+    <Compile Include="OnlyInJoinedListElementScalar.cs" />
+    <Compile Include="OnlyInJoinedListElement.cs" />
+    <Compile Include="NotInJoinedListElementScalar.cs" />
+    <Compile Include="NotInJoinedListElement.cs" />
+    <Compile Include="JoinedListElement.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
