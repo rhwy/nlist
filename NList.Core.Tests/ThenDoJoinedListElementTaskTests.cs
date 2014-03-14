@@ -102,5 +102,27 @@ namespace NList.Core.Tests
 			Check.That (reduced as IEnumerable).IsNotNull ();
 			Check.That (reduced).ContainsExactly (1, 3, 4);
 		}
+
+		[Test]
+		public void the_second_method_provided_is_the_error_callback ()
+		{
+			JoinedListElement<User> joinedList = ForElements
+				.In (SampleData.Source)
+				.AlsoIn (SampleData.Modified, x => x.Id);
+			List<string> errors = new List<string> ();
+
+			joinedList.Do (
+				user => {
+					if (user.Id == 3 || user.Id == 4)
+						throw new Exception ("do");
+				},
+				(user, error) => {
+					errors.Add (error.Message);
+				}
+			);
+
+			Check.That (errors).HasSize (2);
+			Check.That (string.Join ("", errors)).IsEqualTo ("dodo");
+		}
 	}
 }

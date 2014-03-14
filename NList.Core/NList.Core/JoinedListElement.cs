@@ -36,10 +36,21 @@ namespace NList.Core
 			Other = other;
 		}
 
-		public void Do (Action<T> actionOnEach)
+		public void Do (Action<T> actionOnEach, Action<T,Exception> errorActionOnEach = null)
 		{
+			if (errorActionOnEach == null) {
+				foreach (var element in definedEnumerableList ()) {
+					actionOnEach (element);
+				}
+				return;
+			}
+
 			foreach (var element in definedEnumerableList ()) {
-				actionOnEach (element);
+				try {
+					actionOnEach (element);
+				} catch (Exception ex) {
+					errorActionOnEach (element, ex);
+				}
 			}
 		}
 
