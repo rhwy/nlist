@@ -31,11 +31,6 @@ namespace NList.Core
 		{
 			return new ListElementsWrapper<T> (source);
 		}
-
-		public static dynamic NotIn<T> (List<T> source)
-		{
-			throw new NotImplementedException ();
-		}
 	}
 }
 
