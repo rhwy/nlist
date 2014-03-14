@@ -35,6 +35,11 @@ namespace NList.Core
 			JoinKey = joinKey;
 		}
 
+		public ElementsInBothListButModified<T,TKey> ModifiedBy (params Func<T,dynamic>[] comparators)
+		{
+			return new ElementsInBothListButModified<T,TKey> (Source, Other, JoinKey, comparators);
+		}
+
 		protected override IEnumerable<T> definedEnumerableList ()
 		{
 			return EnumerableExtentions.Same (

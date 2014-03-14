@@ -20,17 +20,37 @@
 //	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //	SOFTWARE.
 // ==============================================================================
+using System.Linq;
+
 namespace NList.Core
 {
 	using System;
 	using System.Collections.Generic;
 
-	public class ForElements
+	public class ElementsInBothListButModified<T,TKey> : AlsoInJoinedListElement<T,TKey>
 	{
-		public static ListElementsWrapper<T> In<T> (IEnumerable<T> source)
+		public IEnumerable<Func<T,dynamic>> Comparators { get; private set; }
+
+		public ElementsInBothListButModified (
+			IEnumerable<T> source, IEnumerable<T> other, Func<T,TKey> joinKey, params Func<T,dynamic>[] comparators)
+			: base (source, other, joinKey)
 		{
-			return new ListElementsWrapper<T> (source);
+			if (!comparators.Any ())
+				Comparators = new List<Func<T, dynamic>> (){ x => x };
+			else {
+				Comparators = new List<Func<T,dynamic>> (comparators ?? (new Func<T,dynamic>[]{ x => x }));
+			}
+		}
+
+		protected override IEnumerable<T> definedEnumerableList ()
+		{
+			IEnumerable<T> elementsInBoth = EnumerableExtentions.Modified<T,TKey> (
+				                                Source,
+				                                Other,
+				                                JoinKey,
+				                                Comparators.ToArray ());
+
+			return elementsInBoth;
 		}
 	}
 }
-

@@ -74,5 +74,32 @@ namespace NList.Core
 			       from ti in tempItems
 			       select ti;
 		}
+
+		public static IEnumerable<T> Modified<T, TKey> (
+			IEnumerable<T> items, 
+			IEnumerable<T> other, 
+			Func<T, TKey> getKey,
+			params Func<T, dynamic>[] filterKeys
+		)
+		{
+			return from item in items
+			       join otherItem in other on getKey (item)
+				equals getKey (otherItem) into tempItems
+			       from ti in tempItems
+			       where buildAndFilterWhereClause (item, ti, filterKeys)
+			       select ti;
+		}
+
+		private static bool buildAndFilterWhereClause<T> (T key1, T key2, params Func<T, dynamic>[] filterKeys)
+		{
+			bool result = true;
+			if (filterKeys.Any ()) {
+				foreach (var item in filterKeys) {
+					result = result && item (key1) != item (key2);
+				}
+				return result;
+			}
+			return true;
+		}
 	}
 }

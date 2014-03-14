@@ -48,6 +48,7 @@
     <Compile Include="AlsoInJoinedListElementTests.cs" />
     <Compile Include="OnlyInJoinedListElementTests.cs" />
     <Compile Include="NotInJoinedListElementTests.cs" />
+    <Compile Include="ElementsInBothListButModifiedTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

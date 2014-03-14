@@ -58,38 +58,38 @@ namespace NList.Core
 			Source = source;
 		}
 
-		public JoinedListElement<T> NotIn (List<T> other)
+		public JoinedListElement<T> NotIn (IEnumerable<T> other)
 		{
 			Other = other;
 			return new NotInJoinedListElementScalar<T> (Source, Other);
 		}
 
-		public JoinedListElement<T> NotIn<Tkey> (List<T> other, Func<T,Tkey> key)
+		public JoinedListElement<T> NotIn<Tkey> (IEnumerable<T> other, Func<T,Tkey> key)
 		{
 			Other = other;
 			return new NotInJoinedListElement<T,Tkey> (Source, Other, key);
 		}
 
-		public JoinedListElement<T> OnlyIn (List<T> other)
+		public JoinedListElement<T> OnlyIn (IEnumerable<T> other)
 		{
 			Other = other;
 			return new OnlyInJoinedListElementScalar<T> (Source, Other);
 		}
 
-		public JoinedListElement<T> OnlyIn<Tkey> (List<T> other, Func<T,Tkey> key)
+		public JoinedListElement<T> OnlyIn<Tkey> (IEnumerable<T> other, Func<T,Tkey> key)
 		{
 			Other = other;
 			return new OnlyInJoinedListElement<T,Tkey> (Source, Other, key);
 		}
 
-		public JoinedListElement<T> AlsoIn (List<T> other)
+		public AlsoInJoinedListElementScalar<T> AlsoIn (IEnumerable<T> other)
 		{
 			Other = other;
 			return new AlsoInJoinedListElementScalar<T> (Source, Other);
 			;
 		}
 
-		public JoinedListElement<T> AlsoIn<Tkey> (List<T> other, Func<T,Tkey> key)
+		public AlsoInJoinedListElement<T,Tkey> AlsoIn<Tkey> (IEnumerable<T> other, Func<T,Tkey> key)
 		{
 			Other = other;
 			return new AlsoInJoinedListElement<T,Tkey> (Source, Other, key);
