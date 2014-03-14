@@ -20,6 +20,8 @@
 //	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //	SOFTWARE.
 // ==============================================================================
+using System.Collections;
+
 namespace NList.Core
 {
 	using System;
@@ -36,7 +38,9 @@ namespace NList.Core
 
 		public void Do (Action<T> actionOnEach)
 		{
-
+			foreach (var element in definedEnumerableList ()) {
+				actionOnEach (element);
+			}
 		}
 	}
 }

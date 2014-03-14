@@ -20,6 +20,8 @@
 //	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //	SOFTWARE.
 // ==============================================================================
+using System.Collections;
+
 namespace NList.Core.Tests
 {
 	using System;
@@ -46,8 +48,9 @@ namespace NList.Core.Tests
 		{
 			var wrapped = new ListElementsWrapper<User> (SampleData.Source);
 			var joinedList = wrapped.OnlyIn (SampleData.Modified) as JoinedListElement<User>;
+
 			Action<User> onEachAction = (user) => {
-				Check.That (SampleData.Source).Contains (user);
+				Check.That (SampleData.Modified).Contains (user);
 			};
 
 			Check.ThatCode (() => joinedList.Do (onEachAction)).DoesNotThrow ();
@@ -56,15 +59,36 @@ namespace NList.Core.Tests
 		[Test]
 		public void eachAction_delegate_is_called_for_each_element ()
 		{
-			var wrapped = new ListElementsWrapper<User> (SampleData.Source);
-			var joinedList = wrapped.AlsoIn (SampleData.Modified) as JoinedListElement<User>;
+			JoinedListElement<User> joinedList = ForElements
+				.In (SampleData.Source)
+				.AlsoIn (SampleData.Modified, x => x.Id);
+
 			var nbElements = joinedList.Count ();
 			var accumulationCounter = 0;
 
-			joinedList.Do (u => accumulationCounter++);
+			joinedList.Do (u => {
+				accumulationCounter++;
+			});
 
 			Check.That (accumulationCounter).IsEqualTo (nbElements);
 		}
+
+		[Test]
+		public void each_element_of_joinedList_is_passed_to_eachAction_delegate ()
+		{
+			JoinedListElement<User> joinedList = ForElements
+				.In (SampleData.Source)
+				.AlsoIn (SampleData.Modified, x => x.Id);
+
+			var accumulator = "";
+
+			joinedList.Do (u => {
+				if (!string.IsNullOrEmpty (accumulator))
+					accumulator += ",";
+				accumulator += u.Id;
+			});
+
+			Check.That (accumulator).IsEqualTo ("1,3,4");
+		}
 	}
-	
 }
