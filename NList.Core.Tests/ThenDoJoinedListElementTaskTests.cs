@@ -90,5 +90,17 @@ namespace NList.Core.Tests
 
 			Check.That (accumulator).IsEqualTo ("1,3,4");
 		}
+
+		[Test]
+		public void when_delegate_on_Do_action_is_function_then_it_returns_a_list ()
+		{
+			JoinedListElement<User> joinedList = ForElements
+				.In (SampleData.Source)
+				.AlsoIn (SampleData.Modified, x => x.Id);
+
+			var reduced = joinedList.Do (u => u.Id);
+			Check.That (reduced as IEnumerable).IsNotNull ();
+			Check.That (reduced).ContainsExactly (1, 3, 4);
+		}
 	}
 }

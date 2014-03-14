@@ -42,5 +42,12 @@ namespace NList.Core
 				actionOnEach (element);
 			}
 		}
+
+		public IEnumerable Do (Func<T,dynamic> actionOnEach)
+		{
+			foreach (var element in this) {
+				yield return actionOnEach (element);
+			}
+		}
 	}
 }
