@@ -77,5 +77,48 @@ namespace NList.Core.Tests
 
 			Check.That (elementsInBothLists).ContainsExactly (2, 3);
 		}
+
+		[Test]
+		public void it_can_get_elements_in_both_lists_and_look_for_one_difference ()
+		{
+			var left = new[]{ new {a = 1,b = 10}, new {a = 2,b = 20} };
+			var right = new[]{ new {a = 1,b = 10}, new {a = 2,b = 21}, new {a = 3,b = 30} };
+
+			var elementsModified = 
+				EnumerableExtentions.Modified (
+					left,
+					right,
+					x => x.a, //checks for existence on this key
+					x => x.b  //once item is present, it uses this key to compare
+				);
+			//then here only a1 and a2 are present in both, but only a2 has it's b key modified
+
+			Check.That (elementsModified.Properties ("a")).ContainsExactly (2);
+		}
+
+		[Test]
+		public void it_can_get_elements_in_both_lists_and_look_for_two_differences ()
+		{
+			var left = new[]{ new {a = 1,b = 10, c = 100}, new {a = 2,b = 20, c = 200} };
+			var right = new[] { 
+				new {a = 1,b = 11, c = 101}, 
+				new {a = 2,b = 21, c = 200}, 
+				new {a = 3,b = 30, c = 300}
+			};
+
+			var elementsModified = 
+				EnumerableExtentions.Modified (
+					left,
+					right,
+					x => x.a, //checks for existence on this key
+					//once item is present, you can look for other properties:
+					x => x.b, 
+					x => x.c  
+				);
+			//then here, only a1 and a2 are present in both lists, 
+			//a1 and a2 have their b key modified but only a1 has b and c keys modified
+
+			Check.That (elementsModified.Properties ("a")).ContainsExactly (1);
+		}
 	}
 }
