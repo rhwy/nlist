@@ -33,5 +33,10 @@ namespace NList.Core
 			Source = source;
 			Other = other;
 		}
+
+		public void Do ()
+		{
+
+		}
 	}
 }

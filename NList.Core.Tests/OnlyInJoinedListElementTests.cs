@@ -29,6 +29,19 @@ namespace NList.Core.Tests
 	using NUnit.Framework;
 
 	[TestFixture]
+	public class ThenDoJoinedListElementTaskTests
+	{
+		[Test]
+		public void it_is_available_on_joinedLists ()
+		{
+			var wrapped = new ListElementsWrapper<User> (SampleData.Source);
+			var joinedList = wrapped.OnlyIn (SampleData.Modified) as JoinedListElement<User>;
+
+			Check.ThatCode (() => joinedList.Do ()).DoesNotThrow ();
+		}
+	}
+
+	[TestFixture]
 	public class OnlyInJoinedListElementTests
 	{
 		[Test]
