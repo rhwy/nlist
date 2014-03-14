@@ -29,45 +29,42 @@ namespace NList.Core.Tests
 	using NUnit.Framework;
 
 	[TestFixture]
-	public class OnlyInJoinedListElementTests
+	public class ThenDoJoinedListElementTaskTests
 	{
 		[Test]
-		public void when_call_OnlyIn_it_stores_other_list_in_other ()
+		public void it_is_available_on_joinedLists ()
 		{
 			var wrapped = new ListElementsWrapper<User> (SampleData.Source);
-			wrapped.OnlyIn (SampleData.Modified);
+			var joinedList = wrapped.OnlyIn (SampleData.Modified) as JoinedListElement<User>;
 
-			Check.That (wrapped.Other).IsEqualTo (SampleData.Modified);
+			Check.ThatCode (() => joinedList.Do (_ => {
+			})).DoesNotThrow ();
 		}
 
 		[Test]
-		public void when_call_OnlyIn_then_return_type_is_a_joinedList_of_onlyin_type ()
+		public void it_can_accept_a_delegate_defining_each_element_action ()
 		{
 			var wrapped = new ListElementsWrapper<User> (SampleData.Source);
-			var joinList = wrapped.OnlyIn (SampleData.Modified);
+			var joinedList = wrapped.OnlyIn (SampleData.Modified) as JoinedListElement<User>;
+			Action<User> onEachAction = (user) => {
+				Check.That (SampleData.Source).Contains (user);
+			};
 
-			Check.That (joinList).InheritsFrom<IEnumerable<User>> ();
-			Check.That (joinList).InheritsFrom<JoinedListElement<User>> ();
-			Check.That (joinList).InheritsFrom<OnlyInJoinedListElement<User,object>> ();
+			Check.ThatCode (() => joinedList.Do (onEachAction)).DoesNotThrow ();
 		}
 
 		[Test]
-		public void when_enumerate_onlyinjoinlist_it_should_be_filtered ()
+		public void eachAction_delegate_is_called_for_each_element ()
 		{
-			var wrapped = new ListElementsWrapper<int> (new []{ 1, 2, 3 });
-			var joinList = wrapped.OnlyIn (new List<int>{ 1, 3, 4 });
+			var wrapped = new ListElementsWrapper<User> (SampleData.Source);
+			var joinedList = wrapped.AlsoIn (SampleData.Modified) as JoinedListElement<User>;
+			var nbElements = joinedList.Count ();
+			var accumulationCounter = 0;
 
-			Check.That (joinList).ContainsExactly (4);
-		}
+			joinedList.Do (u => accumulationCounter++);
 
-		[Test]
-		public void when_call_onlyin_with_second_parameter_it_is_the_filter_key ()
-		{
-			var sut = ForElements
-				.In (SampleData.Source)
-				.OnlyIn (SampleData.Modified, x => x.Id);
-
-			Check.That (sut.Properties ("Id")).ContainsExactly (5);
+			Check.That (accumulationCounter).IsEqualTo (nbElements);
 		}
 	}
+	
 }

@@ -49,6 +49,7 @@
     <Compile Include="OnlyInJoinedListElementTests.cs" />
     <Compile Include="NotInJoinedListElementTests.cs" />
     <Compile Include="ElementsInBothListButModifiedTests.cs" />
+    <Compile Include="ThenDoJoinedListElementTaskTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
