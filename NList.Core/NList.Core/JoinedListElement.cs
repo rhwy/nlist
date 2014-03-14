@@ -34,7 +34,7 @@ namespace NList.Core
 			Other = other;
 		}
 
-		public void Do ()
+		public void Do<T> (Action<T> actionOnEach)
 		{
 
 		}

@@ -37,7 +37,20 @@ namespace NList.Core.Tests
 			var wrapped = new ListElementsWrapper<User> (SampleData.Source);
 			var joinedList = wrapped.OnlyIn (SampleData.Modified) as JoinedListElement<User>;
 
-			Check.ThatCode (() => joinedList.Do ()).DoesNotThrow ();
+			Check.ThatCode (() => joinedList.Do<User> (_ => {
+			})).DoesNotThrow ();
+		}
+
+		[Test]
+		public void it_can_accept_a_delegate_defining_each_element_action ()
+		{
+			var wrapped = new ListElementsWrapper<User> (SampleData.Source);
+			var joinedList = wrapped.OnlyIn (SampleData.Modified) as JoinedListElement<User>;
+			Action<User> onEachAction = (user) => {
+				Check.That (SampleData.Source).Contains (user);
+			};
+
+			Check.ThatCode (() => joinedList.Do (onEachAction)).DoesNotThrow ();
 		}
 	}
 
