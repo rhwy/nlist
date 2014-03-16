@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>Package</id>
+    <version>0.1.0</version>
+    <authors>ruicarvalho</authors>
+    <owners>ruicarvalho</owners>
+    <licenseUrl>https://raw.github.com/rhwy/nlist/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/rhwy/nlist</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A library with better semantics for list manipulation</description>
+    <releaseNotes>most needed features available</releaseNotes>
+    <copyright>Copyright Rui Carvalho 2014 under MIT licence</copyright>
+    <tags>tools, lists, orm, fluent, entity</tags>
+    <dependencies>
+    </dependencies>
+    <files>
+	<file src="Artifacts/NList.Core.dll"  target="lib" />
+    </files>
+  </metadata>
+</package>
