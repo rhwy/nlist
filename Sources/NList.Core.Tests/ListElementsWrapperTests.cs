@@ -21,6 +21,8 @@
 //	SOFTWARE.
 // ==============================================================================
 
+using NList.Core.Tests.SampleData;
+
 namespace NList.Core.Tests
 {
 	using System;
@@ -35,17 +37,17 @@ namespace NList.Core.Tests
 		[Test]
 		public void it_is_enumerable ()
 		{
-			var wrapped = new ListElementsWrapper<User> (SampleData.Source);
+			var wrapped = new ListElementsWrapper<User> (SampleData.SampleData.Source);
 			Check.That (wrapped).InheritsFrom<IEnumerable<User>> ();
 		}
 
 		[Test]
 		public void when_enumerate_it_should_be_equal_to_source ()
 		{
-			var wrapped = new ListElementsWrapper<User> (SampleData.Source);
+			var wrapped = new ListElementsWrapper<User> (SampleData.SampleData.Source);
 			var enumerated = (wrapped as IEnumerable<User>).ToList ();
 
-			Check.That (enumerated).ContainsExactly (SampleData.Source);
+			Check.That (enumerated).ContainsExactly (SampleData.SampleData.Source);
 		}
 	}
 }

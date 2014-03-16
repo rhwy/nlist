@@ -20,6 +20,9 @@
 //	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //	SOFTWARE.
 // ==============================================================================
+
+using NList.Core.Tests.SampleData;
+
 namespace NList.Core.Tests
 {
 	using System;
@@ -34,7 +37,7 @@ namespace NList.Core.Tests
 		[Test]
 		public void when_call_In_it_returns_a_wrapper_of_the_source ()
 		{
-			var wrapped = ForElements.In (SampleData.Source);
+			var wrapped = ForElements.In (SampleData.SampleData.Source);
 
 			Check.That (wrapped).IsNotNull ();
 			Check.That (wrapped).IsInstanceOf<ListElementsWrapper<User>> ();
@@ -43,7 +46,7 @@ namespace NList.Core.Tests
 		[Test]
 		public void when_call_In_it_returns_a_wrapper_of_the_source_with_ints ()
 		{
-			var wrapped = ForElements.In (SampleData.Source.Select (x => x.Id));
+			var wrapped = ForElements.In (SampleData.SampleData.Source.Select (x => x.Id));
 
 			Check.That (wrapped).IsNotNull ();
 			Check.That (wrapped).IsInstanceOf<ListElementsWrapper<int>> ();
@@ -52,8 +55,8 @@ namespace NList.Core.Tests
 		[Test]
 		public void when_call_In_it_set_Source_property_with_source ()
 		{
-			var wrapped = ForElements.In (SampleData.Source);
-			Check.That (wrapped.Source).IsEqualTo (SampleData.Source);
+			var wrapped = ForElements.In (SampleData.SampleData.Source);
+			Check.That (wrapped.Source).IsEqualTo (SampleData.SampleData.Source);
 		}
 	}
 }

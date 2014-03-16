@@ -34,8 +34,8 @@ namespace NList.Core.Tests
 		[Test]
 		public void it_can_filter_lists_with_same_types ()
 		{
-			var left = SampleData.Source;
-			var right = SampleData.Modified;
+			var left = SampleData.SampleData.Source;
+			var right = SampleData.SampleData.Modified;
 
 			var elementsFromLeftNotInRight = 
 				EnumerableExtentions.Except (
@@ -50,8 +50,8 @@ namespace NList.Core.Tests
 		[Test]
 		public void it_can_filter_lists_with_different_types ()
 		{
-			var left = SampleData.Source;
-			var right = SampleData.Modified.Select (x => x.Id);
+			var left = SampleData.SampleData.Source;
+			var right = SampleData.SampleData.Modified.Select (x => x.Id);
 
 			var elementsFromLeftNotInRight = 
 				EnumerableExtentions.Except (

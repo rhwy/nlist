@@ -20,6 +20,9 @@
 //	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //	SOFTWARE.
 // ==============================================================================
+
+using NList.Core.Tests.SampleData;
+
 namespace NList.Core.Tests
 {
 	using System;
@@ -34,17 +37,17 @@ namespace NList.Core.Tests
 		[Test]
 		public void when_call_NotIn_it_stores_other_list_in_other ()
 		{
-			var wrapped = new ListElementsWrapper<User> (SampleData.Source);
-			wrapped.NotIn (SampleData.Modified);
+			var wrapped = new ListElementsWrapper<User> (SampleData.SampleData.Source);
+			wrapped.NotIn (SampleData.SampleData.Modified);
 
-			Check.That (wrapped.Other).IsEqualTo (SampleData.Modified);
+			Check.That (wrapped.Other).IsEqualTo (SampleData.SampleData.Modified);
 		}
 
 		[Test]
 		public void when_call_NotIn_then_return_type_is_a_joinedList_of_notin_type ()
 		{
-			var wrapped = new ListElementsWrapper<User> (SampleData.Source);
-			var joinList = wrapped.NotIn (SampleData.Modified);
+			var wrapped = new ListElementsWrapper<User> (SampleData.SampleData.Source);
+			var joinList = wrapped.NotIn (SampleData.SampleData.Modified);
 
 			Check.That (joinList).InheritsFrom<IEnumerable<User>> ();
 			Check.That (joinList).InheritsFrom<JoinedListElement<User>> ();
@@ -64,8 +67,8 @@ namespace NList.Core.Tests
 		public void when_call_notin_with_second_parameter_it_is_the_filter_key ()
 		{
 			var sut = ForElements
-				.In (SampleData.Source)
-				.NotIn (SampleData.Modified, x => x.Id);
+				.In (SampleData.SampleData.Source)
+				.NotIn (SampleData.SampleData.Modified, x => x.Id);
 
 			Check.That (sut.Properties ("Id")).ContainsExactly (2);
 		}

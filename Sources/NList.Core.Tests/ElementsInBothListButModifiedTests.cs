@@ -20,6 +20,9 @@
 //	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //	SOFTWARE.
 // ==============================================================================
+
+using NList.Core.Tests.SampleData;
+
 namespace NList.Core.Tests
 {
 	using System;
@@ -34,8 +37,8 @@ namespace NList.Core.Tests
 		[Test]
 		public void it_is_available_in_alsoin_joinedlist ()
 		{
-			var wrapped = new ListElementsWrapper<User> (SampleData.Source);
-			var joinList = wrapped.AlsoIn (SampleData.Modified);
+			var wrapped = new ListElementsWrapper<User> (SampleData.SampleData.Source);
+			var joinList = wrapped.AlsoIn (SampleData.SampleData.Modified);
 			var changed = joinList.ModifiedBy (x => x);
 			Check.That (changed).IsNotEqualTo (null);
 			Check.That (changed).InheritsFrom<ElementsInBothListButModified<User,object>> ();
