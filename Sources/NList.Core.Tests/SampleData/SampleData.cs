@@ -25,7 +25,7 @@ using System.Collections.Generic;
 
 namespace NList.Core.Tests.SampleData
 {
-    public static class SampleData
+    public static class ListsOfUsers
 	{
 		public static List<User> Source = new List<User> {
 			new User (1, "tata"),
@@ -33,6 +33,7 @@ namespace NList.Core.Tests.SampleData
 			new User (3, "titi"),
 			new User (4, "toto")
 		};
+
 		public static List<User> Modified = new List<User> {
 			new User (1, "tata"),
 			new User (3, "titi"),

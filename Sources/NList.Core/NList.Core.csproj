@@ -34,7 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="EnumerableExtentions.cs" />
+    <Compile Include="Enumerables\EnumerableExtentions.cs" />
     <Compile Include="ForElements.cs" />
     <Compile Include="JoinedListElement.cs" />
     <Compile Include="ListElementsWrapper.cs" />

@@ -21,6 +21,7 @@
 //	SOFTWARE.
 // ==============================================================================
 using System.Collections;
+using NList.Core.Tests.SampleData;
 
 namespace NList.Core.Tests
 {
@@ -36,8 +37,8 @@ namespace NList.Core.Tests
 		[Test]
 		public void it_is_available_on_joinedLists ()
 		{
-			var wrapped = new ListElementsWrapper<User> (SampleData.Source);
-			var joinedList = wrapped.OnlyIn (SampleData.Modified) as JoinedListElement<User>;
+			var wrapped = new ListElementsWrapper<User> (SampleData.ListsOfUsers.Source);
+			var joinedList = wrapped.OnlyIn (SampleData.ListsOfUsers.Modified) as JoinedListElement<User>;
 
 			Check.ThatCode (() => joinedList.Do (_ => 1)).DoesNotThrow ();
 		}
@@ -45,10 +46,10 @@ namespace NList.Core.Tests
 		[Test]
 		public void it_can_accept_a_delegate_defining_each_element_action ()
 		{
-			var wrapped = new ListElementsWrapper<User> (SampleData.Source);
-			var joinedList = wrapped.OnlyIn (SampleData.Modified) as JoinedListElement<User>;
+			var wrapped = new ListElementsWrapper<User> (SampleData.ListsOfUsers.Source);
+			var joinedList = wrapped.OnlyIn (SampleData.ListsOfUsers.Modified) as JoinedListElement<User>;
 
-			Action<User> onEachAction = (user) => Check.That (SampleData.Modified).Contains (user);
+			Action<User> onEachAction = (user) => Check.That (SampleData.ListsOfUsers.Modified).Contains (user);
 
 			Check.ThatCode (() => joinedList.Do (onEachAction)).DoesNotThrow ();
 		}
@@ -57,8 +58,8 @@ namespace NList.Core.Tests
 		public void eachAction_delegate_is_called_for_each_element ()
 		{
 			JoinedListElement<User> joinedList = ForElements
-				.In (SampleData.Source)
-				.AlsoIn (SampleData.Modified, x => x.Id);
+				.In (SampleData.ListsOfUsers.Source)
+				.AlsoIn (SampleData.ListsOfUsers.Modified, x => x.Id);
 
 			var nbElements = joinedList.Count ();
 			var accumulationCounter = 0;
@@ -74,8 +75,8 @@ namespace NList.Core.Tests
 		public void each_element_of_joinedList_is_passed_to_eachAction_delegate ()
 		{
 			JoinedListElement<User> joinedList = ForElements
-				.In (SampleData.Source)
-				.AlsoIn (SampleData.Modified, x => x.Id);
+				.In (SampleData.ListsOfUsers.Source)
+				.AlsoIn (SampleData.ListsOfUsers.Modified, x => x.Id);
 
 			var accumulator = "";
 
@@ -92,8 +93,8 @@ namespace NList.Core.Tests
 		public void when_delegate_on_Do_action_is_function_then_it_returns_a_list ()
 		{
 			JoinedListElement<User> joinedList = ForElements
-				.In (SampleData.Source)
-				.AlsoIn (SampleData.Modified, x => x.Id);
+				.In (SampleData.ListsOfUsers.Source)
+				.AlsoIn (SampleData.ListsOfUsers.Modified, x => x.Id);
 
 			var reduced = joinedList.Do (u => u.Id);
 			Check.That (reduced as IEnumerable).IsNotNull ();
@@ -105,8 +106,8 @@ namespace NList.Core.Tests
 		public void the_second_method_provided_is_the_error_callback ()
 		{
 			JoinedListElement<User> joinedList = ForElements
-				.In (SampleData.Source)
-				.AlsoIn (SampleData.Modified, x => x.Id);
+				.In (SampleData.ListsOfUsers.Source)
+				.AlsoIn (SampleData.ListsOfUsers.Modified, x => x.Id);
 
 			var errors = new List<string> ();
 
@@ -143,8 +144,8 @@ namespace NList.Core.Tests
 		    };
 
 			var filtered = ForElements
-				.In (SampleData.Source)
-				.AlsoIn(SampleData.Modified, x => x.Id)
+				.In (SampleData.ListsOfUsers.Source)
+				.AlsoIn(SampleData.ListsOfUsers.Modified, x => x.Id)
                 .Do (
 			        select: projection,
                     onerror: onError);
@@ -169,7 +170,7 @@ namespace NList.Core.Tests
 		        return user.Id;
 		    };
             var errors = new List<string>();
-            List<User> listOfFailedElements = new List<User>();
+            var listOfFailedElements = new List<User>();
 
 		    Action<User, Exception> onError = (user, error) =>
 		    {
@@ -178,8 +179,8 @@ namespace NList.Core.Tests
 		    };
 
 			var filtered = ForElements
-				.In (SampleData.Source)
-				.AlsoIn(SampleData.Modified, x => x.Id)
+				.In (SampleData.ListsOfUsers.Source)
+				.AlsoIn(SampleData.ListsOfUsers.Modified, x => x.Id)
                 .Do (
                     select: getOnlyEven,
                     onerror: onError)
@@ -189,6 +190,7 @@ namespace NList.Core.Tests
                 });
 
 	        Check.That(filtered).ContainsExactly(4);
+	        Check.That(listOfFailedElements.Properties("Id")).ContainsExactly(1, 3);
 	    }
 	}
 }

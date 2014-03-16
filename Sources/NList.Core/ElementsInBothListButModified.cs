@@ -21,6 +21,7 @@
 //	SOFTWARE.
 // ==============================================================================
 using System.Linq;
+using NList.Core.Enumerables;
 
 namespace NList.Core
 {

@@ -20,13 +20,44 @@
 //	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //	SOFTWARE.
 // ==============================================================================
-namespace NList.Core
-{
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
 
-	public static class EnumerableExtentions
+namespace NList.Core.Enumerables
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    public class NotInListHelper<T>
+    {
+        public IEnumerable<T> Items { get; set; }
+        public IEnumerable<T> Other { get; set; }
+        public Func<T, dynamic> GetKey { get; set; }
+
+        public NotInListHelper(
+            IEnumerable<T> items,
+            IEnumerable<T> other,
+            Func<T, dynamic> getKey = null)
+        {
+            Items = items;
+            Other = other;
+            GetKey = getKey ?? (x=>x);
+        }
+
+        public IEnumerable<T> Except<T, TKey>(
+            IEnumerable<T> items,
+            IEnumerable<T> other,
+            Func<T, TKey> getKey)
+        {
+            return from item in items
+                   join otherItem in other on getKey(item)
+                equals getKey(otherItem) into tempItems
+                   from temp in tempItems.DefaultIfEmpty<T>()
+                   where ReferenceEquals(null, temp) || temp.Equals(default(T))
+                   select item;
+        }
+    }
+
+    public static class EnumerableExtentions
 	{
 		public static IEnumerable<T> Except<T, U, TKey> (
 			IEnumerable<T> items, 

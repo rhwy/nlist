@@ -37,8 +37,8 @@ namespace NList.Core.Tests
 		[Test]
 		public void it_is_available_in_alsoin_joinedlist ()
 		{
-			var wrapped = new ListElementsWrapper<User> (SampleData.SampleData.Source);
-			var joinList = wrapped.AlsoIn (SampleData.SampleData.Modified);
+			var wrapped = new ListElementsWrapper<User> (SampleData.ListsOfUsers.Source);
+			var joinList = wrapped.AlsoIn (SampleData.ListsOfUsers.Modified);
 			var changed = joinList.ModifiedBy (x => x);
 			Check.That (changed).IsNotEqualTo (null);
 			Check.That (changed).InheritsFrom<ElementsInBothListButModified<User,object>> ();

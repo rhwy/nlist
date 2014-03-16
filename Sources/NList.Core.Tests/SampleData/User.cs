@@ -20,22 +20,14 @@
 //	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //	SOFTWARE.
 // ==============================================================================
-namespace NList.Core.Tests
+
+using System;
+
+namespace NList.Core.Tests.SampleData
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using NFluent;
-	using NUnit.Framework;
-
-	public class User
+    public class User
 	{
-		public User (int i, char c)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public int Id { get; set; }
+        public int Id { get; set; }
 
 		public string Name { get; set; }
 

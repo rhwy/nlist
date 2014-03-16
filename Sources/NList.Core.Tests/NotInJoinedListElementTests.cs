@@ -37,17 +37,17 @@ namespace NList.Core.Tests
 		[Test]
 		public void when_call_NotIn_it_stores_other_list_in_other ()
 		{
-			var wrapped = new ListElementsWrapper<User> (SampleData.SampleData.Source);
-			wrapped.NotIn (SampleData.SampleData.Modified);
+			var wrapped = new ListElementsWrapper<User> (SampleData.ListsOfUsers.Source);
+			wrapped.NotIn (SampleData.ListsOfUsers.Modified);
 
-			Check.That (wrapped.Other).IsEqualTo (SampleData.SampleData.Modified);
+			Check.That (wrapped.Other).IsEqualTo (SampleData.ListsOfUsers.Modified);
 		}
 
 		[Test]
 		public void when_call_NotIn_then_return_type_is_a_joinedList_of_notin_type ()
 		{
-			var wrapped = new ListElementsWrapper<User> (SampleData.SampleData.Source);
-			var joinList = wrapped.NotIn (SampleData.SampleData.Modified);
+			var wrapped = new ListElementsWrapper<User> (SampleData.ListsOfUsers.Source);
+			var joinList = wrapped.NotIn (SampleData.ListsOfUsers.Modified);
 
 			Check.That (joinList).InheritsFrom<IEnumerable<User>> ();
 			Check.That (joinList).InheritsFrom<JoinedListElement<User>> ();
@@ -67,8 +67,8 @@ namespace NList.Core.Tests
 		public void when_call_notin_with_second_parameter_it_is_the_filter_key ()
 		{
 			var sut = ForElements
-				.In (SampleData.SampleData.Source)
-				.NotIn (SampleData.SampleData.Modified, x => x.Id);
+				.In (SampleData.ListsOfUsers.Source)
+				.NotIn (SampleData.ListsOfUsers.Modified, x => x.Id);
 
 			Check.That (sut.Properties ("Id")).ContainsExactly (2);
 		}

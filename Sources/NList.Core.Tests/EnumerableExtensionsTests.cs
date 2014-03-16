@@ -20,50 +20,87 @@
 //	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //	SOFTWARE.
 // ==============================================================================
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
+using NList.Core.Tests.SampleData;
+
 namespace NList.Core.Tests
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
+    using System.Linq;
 	using NFluent;
 	using NUnit.Framework;
+    using NList.Core.Enumerables;
+
+    [TestFixture]
+    public class NotInListHelperTests
+    {
+        protected IEnumerable<User> Left;
+        protected IEnumerable<User> Right;
+
+        [SetUp]
+        public void when_we_have_two_list_of_the_same_type()
+        {
+            Left = ListsOfUsers.Source;
+            Right = ListsOfUsers.Modified;
+        }
+
+        [Test]
+        public void when_ctor_properties_are_set()
+        {
+            Func<User, dynamic> selector = x => x.Id;
+            var sut = new NotInListHelper<User>(Left, Right, selector);
+            Check.That(sut).IsNotNull();
+            Check.That(sut.Items).IsEqualTo(Left);
+            Check.That(sut.Other).IsEqualTo(Right);
+            Check.That(sut.GetKey).IsEqualTo(selector);
+        }
+
+        [Test]
+        public void when_ctor_with_no_selector_then_it_uses_idendity_selector()
+        {
+            var sut = new NotInListHelper<User>(Left, Right);
+            Func<User, dynamic> identitySelector = x => x;
+            Check.That(sut).IsNotNull();
+            Check.That(sut.GetKey.GetHashCode()).IsEqualTo(identitySelector.GetHashCode());
+        }
+
+        [Test]
+        public void it_can_filter_lists_with_same_types()
+        {
+            
+            var elementsFromLeftNotInRight =
+                EnumerableExtentions.Except(
+                    Left,
+                    Right,
+                    x => x.Id
+                );
+
+            Check.That(elementsFromLeftNotInRight.Properties("Id")).ContainsExactly(2);
+        }
+
+        [Test]
+        public void it_can_filter_lists_with_different_types()
+        {
+            var elementsFromLeftNotInRight =
+                EnumerableExtentions.Except<User,int,int>(
+                    Left,
+                    Right.Select(x=>x.Id),
+                    x => x.Id,
+                    x => x
+                );
+
+            Check.That(elementsFromLeftNotInRight.Properties("Id")).ContainsExactly(2);
+        }
+
+    }
 
 	[TestFixture]
 	public class EnumerableExtensionsTests
 	{
-		[Test]
-		public void it_can_filter_lists_with_same_types ()
-		{
-			var left = SampleData.SampleData.Source;
-			var right = SampleData.SampleData.Modified;
-
-			var elementsFromLeftNotInRight = 
-				EnumerableExtentions.Except (
-					left,
-					right,
-					x => x.Id
-				);
-
-			Check.That (elementsFromLeftNotInRight.Properties ("Id")).ContainsExactly (2);
-		}
-
-		[Test]
-		public void it_can_filter_lists_with_different_types ()
-		{
-			var left = SampleData.SampleData.Source;
-			var right = SampleData.SampleData.Modified.Select (x => x.Id);
-
-			var elementsFromLeftNotInRight = 
-				EnumerableExtentions.Except (
-					left,
-					right,
-					x => x.Id,
-					x => x
-				);
-
-			Check.That (elementsFromLeftNotInRight.Properties ("Id")).ContainsExactly (2);
-		}
-
+		
 		[Test]
 		public void it_can_get_elements_of_same_type_in_both_lists ()
 		{
