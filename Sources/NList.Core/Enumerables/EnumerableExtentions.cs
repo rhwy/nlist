@@ -27,30 +27,40 @@ namespace NList.Core.Enumerables
     using System.Collections.Generic;
     using System.Linq;
 
-    public class NotInListHelper<T>
+    public interface INotInListHelper<TSource,TOther,TKey>
+    {
+        IEnumerable<TSource> Items { get; set; }
+        IEnumerable<TOther> Other { get; set; }
+        Func<TSource, TKey> JoinItemsKey { get; set; }
+        Func<TOther, TKey> JoinOthersKey { get; set; }
+
+        IEnumerable<TSource> GetExpression();
+    }
+
+    public class NotInListHelper<T, TKey> : INotInListHelper<T, T, TKey>
     {
         public IEnumerable<T> Items { get; set; }
         public IEnumerable<T> Other { get; set; }
-        public Func<T, dynamic> GetKey { get; set; }
+        public Func<T, TKey> JoinItemsKey { get; set; }
+        public Func<T, TKey> JoinOthersKey { get; set; }
 
         public NotInListHelper(
             IEnumerable<T> items,
             IEnumerable<T> other,
-            Func<T, dynamic> getKey = null)
+            Func<T, TKey> joinKey = null
+            )
         {
             Items = items;
             Other = other;
-            GetKey = getKey ?? (x=>x);
+            JoinItemsKey = joinKey ?? (x => (TKey)Convert.ChangeType(x, typeof(TKey)));
+            JoinOthersKey = JoinItemsKey;
         }
 
-        public IEnumerable<T> Except<T, TKey>(
-            IEnumerable<T> items,
-            IEnumerable<T> other,
-            Func<T, TKey> getKey)
+        public IEnumerable<T> GetExpression()
         {
-            return from item in items
-                   join otherItem in other on getKey(item)
-                equals getKey(otherItem) into tempItems
+            return from item in Items
+                   join otherItem in Other on JoinItemsKey(item)
+                equals JoinOthersKey(otherItem) into tempItems
                    from temp in tempItems.DefaultIfEmpty<T>()
                    where ReferenceEquals(null, temp) || temp.Equals(default(T))
                    select item;
@@ -79,12 +89,7 @@ namespace NList.Core.Enumerables
 			IEnumerable<T> other, 
 			Func<T, TKey> getKey)
 		{
-			return from item in items
-			       join otherItem in other on getKey (item)
-				equals getKey (otherItem) into tempItems
-			       from temp in tempItems.DefaultIfEmpty<T> ()
-			       where ReferenceEquals (null, temp) || temp.Equals (default(T))
-			       select item;
+			return new NotInListHelper<T,TKey>(items,other,getKey).GetExpression();
 		}
 
 		public static IEnumerable<T> Same<T> (

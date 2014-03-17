@@ -25,6 +25,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
+using Microsoft.Win32;
 using NList.Core.Tests.SampleData;
 
 namespace NList.Core.Tests
@@ -35,7 +36,7 @@ namespace NList.Core.Tests
     using NList.Core.Enumerables;
 
     [TestFixture]
-    public class NotInListHelperTests
+    public class NotInListHelperWithSameTypeTests
     {
         protected IEnumerable<User> Left;
         protected IEnumerable<User> Right;
@@ -48,24 +49,31 @@ namespace NList.Core.Tests
         }
 
         [Test]
+        public void ensure_it_is_base_contract_with_same_types()
+        {
+            var sut = new NotInListHelper<User,User>(Left, Right);
+            Check.That(sut).InheritsFrom<INotInListHelper<User, User,User>>();
+        }
+        [Test]
         public void when_ctor_properties_are_set()
         {
-            Func<User, dynamic> selector = x => x.Id;
-            var sut = new NotInListHelper<User>(Left, Right, selector);
+            Func<User, int> selector = x => x.Id;
+            var sut = new NotInListHelper<User,int>(Left, Right, selector);
             Check.That(sut).IsNotNull();
             Check.That(sut.Items).IsEqualTo(Left);
             Check.That(sut.Other).IsEqualTo(Right);
-            Check.That(sut.GetKey).IsEqualTo(selector);
+            Check.That(sut.JoinItemsKey).IsEqualTo(selector);
         }
 
         [Test]
         public void when_ctor_with_no_selector_then_it_uses_idendity_selector()
         {
-            var sut = new NotInListHelper<User>(Left, Right);
-            Func<User, dynamic> identitySelector = x => x;
+            var sut = new NotInListHelper<User,User>(Left, Right);
+            Func<User, User> identitySelector = x => x;
             Check.That(sut).IsNotNull();
-            Check.That(sut.GetKey.GetHashCode()).IsEqualTo(identitySelector.GetHashCode());
+            Check.That(sut.JoinItemsKey.GetHashCode()).IsEqualTo(identitySelector.GetHashCode());
         }
+
 
         [Test]
         public void it_can_filter_lists_with_same_types()

@@ -8,7 +8,7 @@
     <ProjectGuid>{40A830FC-8C5D-4700-BF3A-8D099A617015}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>NList.Core</RootNamespace>
-    <AssemblyName>NList.Core</AssemblyName>
+    <AssemblyName>ReList.Core</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

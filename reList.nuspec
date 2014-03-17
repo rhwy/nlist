@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package >
   <metadata>
-    <id>Package</id>
+    <id>reList</id>
     <version>0.1.0</version>
     <authors>ruicarvalho</authors>
     <owners>ruicarvalho</owners>
@@ -11,11 +11,11 @@
     <description>A library with better semantics for list manipulation</description>
     <releaseNotes>most needed features available</releaseNotes>
     <copyright>Copyright Rui Carvalho 2014 under MIT licence</copyright>
-    <tags>tools, lists, orm, fluent, entity</tags>
+    <tags>tools, lists, orm, enumerable, ddd, dsl, fluent, entity</tags>
     <dependencies>
     </dependencies>
-    <files>
-	<file src="Artifacts/NList.Core.dll"  target="lib" />
-    </files>
   </metadata>
+  <files>
+       <file src="Artifacts/ReList.Core.dll"  target="lib" />
+    </files>
 </package>
