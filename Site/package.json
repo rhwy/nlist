@@ -1,0 +1,30 @@
+{
+  "name": "NList",
+  "version": "0.1.0",
+  "description": "information site for NList project",
+  "main": "server.js",
+  "scripts": {
+    "test": "karma karma.conf.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/rhwy/nlist"
+  },
+  "keywords": [
+    "csharp",
+    "c#",
+    "entity",
+    "enumerable",
+    "database"
+  ],
+  "author": "Rui Carvalho (@rhwy)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rhwy/nlist/issues"
+  },
+  "homepage": "https://github.com/rhwy/nlist",
+  "devDependencies": {
+    "bower": "~1.3.1",
+    "karma": "~0.12.0"
+  }
+}
